@@ -112,6 +112,8 @@ const isBaseCase = (state, depth) => {
  *   heuristic does.
  */
 const minimax = (state, depth, maximizingPlayer) => {
+    //console.log("depth", depth);
+    //console.log("state", state)
     if (isBaseCase(state, depth)) {
         return heuristic(state, maximizingPlayer)
     } else {
@@ -122,10 +124,37 @@ const minimax = (state, depth, maximizingPlayer) => {
         // ANY INFORMATION YOU NEED from
         // the "state" object is already
         // pulled from it.
+        //console.log('state', state)
         const possibleStates = state.nextStates();
         const minimizingPlayer = maximizingPlayer === 'x' ? 'o' : 'x';
         const currentPlayer = state.nextMovePlayer;
-        return minimax(state, depth - 1, maximizingPlayer)
+        let newDepth = depth - 1;
+
+        if (currentPlayer === maximizingPlayer) {
+            let maxValue = -Infinity
+            let maxState;
+
+            for (let i = 0; i < possibleStates.length; i++) {
+                let stateValue = minimax(possibleStates[i], newDepth, maximizingPlayer)
+                if ( stateValue > maxValue) {
+                  maxValue = stateValue
+                }
+            }
+
+            return maxValue
+        } else {
+            let minValue = Infinity
+            let minState;
+
+            for (let i = 0; i < possibleStates.length; i++) {
+                let stateValue = minimax(possibleStates[i], newDepth, maximizingPlayer)
+                if ( stateValue < minValue) {
+                  minValue = stateValue
+                }
+            }
+
+            return minValue
+        }
         // Reduce to further
         // invocations of minimax.
     }
