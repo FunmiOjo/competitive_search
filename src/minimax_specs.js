@@ -133,7 +133,7 @@ describe('"isBaseCase" returns the correct values', function(){
 
 
 
-describe.only('"minimax" returns the correct values', function(){
+describe('"minimax" returns the correct values', function(){
 
 	/* The depth which is passed to the minimax function tells it how many
 	   layers down to go.

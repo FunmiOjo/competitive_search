@@ -28,7 +28,7 @@
  */
 const DEPTH = 3;
 const minimaxWrapper = (state, maximizingPlayer) =>
-    minimax(state, DEPTH, maximizingPlayer);
+    minimaxAlphaBeta(state, DEPTH, maximizingPlayer);
 
 /*
  * heuristic
@@ -171,9 +171,55 @@ const minimaxAlphaBeta = (state, depth, maximizingPlayer) => {
 	const minimaxAlphaBetaInner = (state, depth, alpha, beta) => {
 
         if (isBaseCase(state, depth)) {
-            // Invoke heuristic
+            return heuristic(state, maximizingPlayer)
         } else {
+            const possibleStates = state.nextStates();
+            const minimizingPlayer = maximizingPlayer === 'x' ? 'o' : 'x';
+            const currentPlayer = state.nextMovePlayer;
+            let newDepth = depth - 1
+            if (currentPlayer === maximizingPlayer) {
+                let currentAlpha = alpha
+                let maxValue = -Infinity
+                let value
+
+                for (let i = 0; i < possibleStates.length; i++) {
+                    value = minimaxAlphaBetaInner(possibleStates[i], newDepth, alpha, beta)
+                    if (value >= maxValue) {
+                        maxValue = value
+                    }
+                    if (value >= alpha) {
+                        alpha = value
+                    }
+
+                    if (value >= beta) {
+                        break
+                    }
+                }
+                return maxValue
+            } else {
+                let minValue = Infinity
+                let value
+
+                for (let i = 0; i < possibleStates.length; i++) {
+                    value = minimax(possibleStates[i], newDepth, maximizingPlayer, alpha, beta)
+                    if (value <= minValue) {
+                      minValue = value
+                    }
+
+                    if (value <= beta) {
+                        beta = value
+                    }
+
+                    if (value <= alpha) {
+                        break
+                    }
+                }
+                return minValue
+            }
+
+
             // Reduce further.
+            //let currentAlpha be -100
         }
 	}
 
