@@ -6,7 +6,7 @@
  *
  * Note that you should read
  * the pre-written functions.
- * 
+ *
  * Contents:
  * 1. minimaxWrapper:   Pre-written
  * 2. heuristic:        Pre-written
@@ -97,7 +97,7 @@ const heuristic = (state, maximizingPlayer) => {
 const isBaseCase = (state, depth) => {
     const possibleSuccessorStates = state.nextStates();
     const numberPossibleSuccessorStates = possibleSuccessorStates.length;
-    // Your code here.
+    return (numberPossibleSuccessorStates === 0 || depth === 0)
 }
 
 /*
@@ -113,9 +113,9 @@ const isBaseCase = (state, depth) => {
  */
 const minimax = (state, depth, maximizingPlayer) => {
     if (isBaseCase(state, depth)) {
-        // Invoke heuristic
+        return heuristic(state, maximizingPlayer)
     } else {
-        // Possible states is an array of future states, of 
+        // Possible states is an array of future states, of
         // the same kind that gets passed into the "state"
         // paramter in minimax.
         //
@@ -125,6 +125,7 @@ const minimax = (state, depth, maximizingPlayer) => {
         const possibleStates = state.nextStates();
         const minimizingPlayer = maximizingPlayer === 'x' ? 'o' : 'x';
         const currentPlayer = state.nextMovePlayer;
+        return minimax(state, depth - 1, maximizingPlayer)
         // Reduce to further
         // invocations of minimax.
     }
@@ -139,7 +140,7 @@ const minimax = (state, depth, maximizingPlayer) => {
 const minimaxAlphaBeta = (state, depth, maximizingPlayer) => {
 
 	const minimaxAlphaBetaInner = (state, depth, alpha, beta) => {
-        
+
         if (isBaseCase(state, depth)) {
             // Invoke heuristic
         } else {
